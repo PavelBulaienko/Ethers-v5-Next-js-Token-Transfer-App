@@ -1,4 +1,5 @@
 export const getCurrencyByChainId = (chainId) => {
+    //получение основной валюты сети
     switch (chainId) {
         case '1':
             return 'ETH'

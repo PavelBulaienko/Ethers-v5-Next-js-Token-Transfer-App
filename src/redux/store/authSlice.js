@@ -12,16 +12,20 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setAuthState(state, action) {
+            //состояние авторизации
             state.authState = action.payload;
         },
         setUserAddress(state, action) {
+            //действующий подключенный кошелек
             state.userAddress = action.payload;
         },
         setChainId(state, action) {
+            //подключенная сеть
             state.chainId = action.payload;
         },
     },
     extraReducers: {
+        //для правильной работы с next.js
         [HYDRATE]: (state, action) => {
             return {
                 ...state,

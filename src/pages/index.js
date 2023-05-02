@@ -3,7 +3,7 @@ import {Inter} from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {
-    selectAuthState,
+    selectAuthState, selectChainId,
     selectUserAddress,
     setAuthState,
     setChainId,
@@ -13,28 +13,35 @@ import Header from "@/components/Header/Header";
 import {useEffect} from "react";
 import {checkIsWalletConnected} from "@/helpers/checkIsWalletConnected";
 import {getUserBalance} from "@/helpers/getUserBalance";
-import {setUserBalance} from "@/redux/store/userDataSlice";
+import {setUserBalance, setUserBalanceDOGE, setUserBalanceUSDT, setUserBalanceBUSD} from "@/redux/store/userDataSlice";
+import SendForm from "@/components/SendForm/SendForm";
 
 const inter = Inter({subsets: ['latin']})
 
 
 const Home = () => {
-    const authState = useSelector(selectAuthState)
     const userAddress = useSelector(selectUserAddress)
+    const chainId = useSelector(selectChainId)
     const dispatch = useDispatch()
 
+    //создание колбеков для переиспользования внутри функций
     const dispatchAuthState = (result) => dispatch(setAuthState(result))
     const dispatchUserAddress = (result) => dispatch(setUserAddress(result))
     const dispatchChainId = (result) => dispatch(setChainId(result))
     const dispatchUserBalance = (result) => dispatch(setUserBalance(result))
+    const dispatchUserBalanceDOGE = (result) => dispatch(setUserBalanceDOGE(result))
+    const dispatchUserBalanceUSDT = (result) => dispatch(setUserBalanceUSDT(result))
+    const dispatchUserBalanceBUSD = (result) => dispatch(setUserBalanceBUSD(result))
 
     useEffect(() => {
+        //проверка на подключенные кошельки
         checkIsWalletConnected(dispatchAuthState, dispatchUserAddress, dispatchChainId)
     }, [])
 
     useEffect(() => {
-        getUserBalance(userAddress, dispatchUserBalance)
-    }, [userAddress])
+        //получение балансов пользователей при первой загрузке, смене кошелька и смене сети
+        getUserBalance(userAddress, dispatchUserBalance, dispatchUserBalanceDOGE, dispatchUserBalanceUSDT, dispatchUserBalanceBUSD, chainId)
+    }, [userAddress, chainId])
 
     return (
         <>
@@ -47,7 +54,7 @@ const Home = () => {
             <main className={`${styles.main} ${inter.className}`}>
                 <Header/>
                 <div className={styles.description}>
-                    <h1>authState: {authState.toString()}</h1>
+                    <SendForm/>
                 </div>
             </main>
         </>

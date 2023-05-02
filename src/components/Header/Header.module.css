@@ -1,5 +1,27 @@
 .headerWrapper{
+    max-width: 40%;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: auto;
+}
+
+.menuButton{
+    margin: 0 0 15px auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modalHeader{
     display: flex;
     justify-content: flex-end;
     gap: 5px;
+    margin: 0 0 10px;
+}
+
+.connectButton{
+    padding: 10px;
+    width: fit-content;
+    margin: 0 0 0 auto;
 }
